@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import session from 'express-session';
 import passport from 'passport';
-import { Strategy as LocalStrategy } from 'passport-local';
+import { fork } from 'child_process';
+
 
 const apiRoutes = Router();
 
@@ -42,6 +42,38 @@ apiRoutes.get('/faillogin', (req, res) => {
 apiRoutes.get('/logout', (req, res) => {
     req.logout();
     res.redirect('/');
+});
+
+apiRoutes.get('/info', (req, res) => {
+    const directory = process.cwd();
+    
+    const id = process.pid;
+
+    const nodeVersion = process.version;
+
+    const memory = process.memoryUsage();
+
+    const platform = process.platform;
+
+    const inputArgs = process.argv.slice(2).length == 0
+        ? 'No argument inputs'
+        : process.argv.slice(2);
+
+    const processVariables = {directory, id, nodeVersion, memory, platform, inputArgs};
+
+    res.json(processVariables);
+});
+
+apiRoutes('/api/randoms', (req, res) => {
+    
+    const calculate = fork('../calculate.js');
+
+    calculate.send('start');
+
+    calculate.on('message', obj => {
+        res.end("Obj: ", obj);
+    })
+
 });
 
 export default apiRoutes;
