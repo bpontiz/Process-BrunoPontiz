@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import passport from 'passport';
 import { fork } from 'child_process';
+import calculate from '../calculate.js';
 
 
 const apiRoutes = Router();
@@ -65,6 +66,8 @@ apiRoutes.get('/info', (req, res) => {
 });
 
 apiRoutes('/api/randoms', (req, res) => {
+
+    calculate(req.query);
     
     const calculate = fork('../calculate.js');
 

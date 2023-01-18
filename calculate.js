@@ -1,25 +1,34 @@
-const reqQuantity = req.query
-        ? Number(req.query)
+const calculate = (query) => {
+    const reqQuantity = query 
+        ? query
         : 10000;
 
-const arrayRandoms = [];
+    const arrayRandoms = [];
 
-const numberCounterArray = [];
-    
-for (let i = 1; i < reqQuantity; i++) {
-    
+    const numberCounterArray = [];
+
+    for (let i = 1; i < reqQuantity; i++) {
+
     arrayRandoms.push(Math.floor(Math.random() * 1000));
 
-};
+    };
 
-for (let j = 0; j < arrayRandoms.length - 1; j++) {
+    for (let j = 0; j < arrayRandoms.length - 1; j++) {
 
     const filterArray = arrayRandoms.filter(num => num == arrayRandoms[j]).length;
 
-    const actualIterator = [arrayRandoms[j], filterArray];
+    const actualIterator = {
+
+        [arrayRandoms[j]]: filterArray
+
+    }
 
     numberCounterArray.push(actualIterator);
 
+    };
+
+    return numberCounterArray;
 };
 
-export default numberCounterArray;
+export default calculate;
+
